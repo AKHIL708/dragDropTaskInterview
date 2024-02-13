@@ -4,13 +4,13 @@
   flex-direction: column;
   .dragable-cards {
     width: 100vw;
-    .add-input{
+    .add-input {
       // border: 1px solid red;
       display: flex;
       justify-content: flex-end;
       padding: 1vw;
       //background-color: red;
-      button{
+      button {
         font-size: 1.2vw;
         padding: 0.6vw 1.2vw;
         outline: none;
@@ -19,65 +19,72 @@
         font-family: sans-serif;
       }
     }
-    header{
+    header {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      .col{
+      .col {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: calc(100vw / 3);
-        header{
+        header {
           border: 1px solid black;
           width: 100%;
           padding: 1vw;
-          h1{
+          h1 {
             font-size: 1.5vw;
           }
         }
-        .holder{
+        .holder {
           width: 100%;
           padding: 1.2vw;
-          .card{
+          .card {
             border: 1px solid gray;
             width: 100%;
             margin: 0.5vw 0;
             padding: 0.3vw;
             border-radius: 0.4vw;
-            cursor:pointer;
-            .row:nth-child(1){
-           //   background-color: red;
+            cursor: pointer;
+          
+            .row:nth-child(1) {
+              // background-color: red;
               display: flex;
               align-items: center;
               justify-content: flex-end;
               margin-bottom: -2vw;
-              .icon{
+              .icon {
                 font-size: 1.5vw;
                 margin: 0 0.2vw;
                 cursor: pointer;
               }
             }
-            .row{
+            .row {
               margin: 0.4vw 0;
               font-size: 1.2vw;
+              .highlight-age{
+                font-size: 2vw;
+                font-weight: bolder;
+                color: red;
+              }
             }
           }
         }
-
+      }
     }
   }
-  }
+  
   .inputs-container {
     width: 50vw;
     border-radius: 0.6vw;
-    box-shadow: 10px 10px 90px -34px rgba(0,0,0,0.41);
-    margin:0 2vw;
-    padding: 0.8vw;
+    box-shadow: 10px 10px 90px -34px rgba(0, 0, 0, 0.41);
+    margin: 0 2vw;
+    padding: 1.5vw 0.8vw;
     .col:nth-child(3) {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      // background-color: red;
     }
     .col {
       display: flex;
@@ -90,6 +97,9 @@
         font-family: sans-serif;
         border: none;
         margin: 0 0.5vw;
+        background-color: gray;
+        color: black;
+        font-weight: bold;
         cursor: pointer;
       }
       .row {
@@ -99,13 +109,14 @@
           display: flex;
           border-radius: 0.5vw;
           background-color: #ececec;
+          font-size: 1vw;
           width: 23.5vw;
           input {
             width: 15vw;
           }
         }
         .h1 {
-          font-size: 2vw;
+          font-size: 1.2vw;
           padding: 0.4vw 0;
         }
         input {
@@ -118,6 +129,41 @@
           width: 23.5vw;
         }
       }
+    }
+  }
+}
+
+.edit-card{
+  .col{
+    .row{
+      padding: 0.5vw 0;
+      h1{
+        font-size: 1.5vw;
+        font-weight: 500;
+      }
+      input{
+        margin: 0.2vw 0;
+        border: none;
+        background-color: #c4c3c3;
+        color:  black;
+        font-size: 2vw;
+        padding: 0.6vw ;
+        box-shadow: 10px 10px 120px -104px rgba(0, 0, 0, 0.41);
+      }
+      input:focus{
+        border: none;
+        outline: none;
+      }
+    }
+    button{
+      background-color: gray;
+      color: black;
+      font-family: sans-serif;
+      font-size: 1.5vw;
+      padding: 0.5vw 1.5vw;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
     }
   }
 }

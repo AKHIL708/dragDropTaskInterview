@@ -12,7 +12,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -37,43 +37,84 @@ const Input = () => {
   const dragStart = (e, position, id) => {
     setShowCard(false);
     dragItem.current = position;
-    console.log(e.target.innerHTML);
+    // console.log(e.target.innerHTML);
   };
 
   const drop = (e, cardIndex, id) => {
     let positionDroped = e.nativeEvent.screenX;
-    if (positionDroped > 0 && positionDroped < 500) {
-      let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
-        1,
-        18
-      ));
-      let updateArr = [...userHandlers, updateAge];
-      setUserHandlers(updateArr);
-    }
-    if (positionDroped > 500 && positionDroped < 1000) {
-      let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
-        19,
-        25
-      ));
-      let updateArr = [...userHandlers, updateAge];
-      setUserHandlers(updateArr);
-    }
-    if (positionDroped > 1000 && positionDroped < 1500) {
-      let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
-        26,
-        45
-      ));
-      let updateArr = [...userHandlers, updateAge];
-      setUserHandlers(updateArr);
+    console.log(positionDroped);
+    // for laptops
+    if (window.innerWidth < 1370) {
+      if (positionDroped > 0 && positionDroped < 340) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          1,
+          18
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
+      if (positionDroped > 340 && positionDroped < 690) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          19,
+          25
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
+      if (positionDroped > 690 && positionDroped < 1030) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          26,
+          45
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
+
+      if (positionDroped > 1030) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          45,
+          99
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
     }
 
-    if (positionDroped > 1500 && positionDroped < 2000) {
-      let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
-        45,
-        99
-      ));
-      let updateArr = [...userHandlers, updateAge];
-      setUserHandlers(updateArr);
+    // for deskstop
+    if (window.innerWidth > 1370) {
+      if (positionDroped > 0 && positionDroped < 500) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          1,
+          18
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
+      if (positionDroped > 500 && positionDroped < 1000) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          19,
+          25
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
+      if (positionDroped > 1000 && positionDroped < 1500) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          26,
+          45
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
+
+      if (positionDroped > 1500 && positionDroped < 2000) {
+        let updateAge = (userHandlers[cardIndex].age = randomIntFromInterval(
+          45,
+          99
+        ));
+        let updateArr = [...userHandlers, updateAge];
+        setUserHandlers(updateArr);
+      }
     }
   };
 
@@ -93,8 +134,20 @@ const Input = () => {
       alert("Invalid Age !");
       return;
     }
-    let updatedArr = [...userHandlers, userCredentails];
+
+    let addIdToUserCredentials = {
+      ...userCredentails,
+      id: Date.now(),
+    };
+
+    let updatedArr = [...userHandlers, addIdToUserCredentials];
     setUserHandlers(updatedArr);
+    // setUserCredentails({
+    //   name: "",
+    //   email: "",
+    //   phone: "",
+    //   age: "",
+    // });
 
     console.log(userCredentails);
     console.log(userHandlers);
@@ -104,19 +157,53 @@ const Input = () => {
   };
 
   const EditCard = () => {
-    console.log(modalData.id);
-    userHandlers[modalData.id].name = userCredentails.name;
-    userHandlers[modalData.id].age = userCredentails.age;
-    userHandlers[modalData.id].email = userCredentails.email;
-    userHandlers[modalData.id].phone = userCredentails.phone;
-    setUserHandlers([...userHandlers]);
-    setOpen(false);
+    const updatedId = modalData.id;
+
+    // Find the index of the object with the given ID
+    const objectIndex = userHandlers.findIndex((user) => user.id === updatedId);
+
+    // Check if the object with the specified ID was found
+
+    if (objectIndex !== -1) {
+      setUserCredentails(userHandlers[objectIndex]);
+      // Create a new array with the updated object
+      const updatedArray = [...userHandlers];
+      updatedArray[objectIndex] = {
+        ...updatedArray[objectIndex],
+        name: userCredentails.name,
+        age: userCredentails.age,
+        email: userCredentails.email,
+        phone: userCredentails.phone,
+      };
+
+      // Update the state with the modified array
+      setUserHandlers(updatedArray);
+      setOpen(false);
+    } else {
+      console.error(`Object with ID ${updatedId} not found`);
+      // Handle the case where the object with the specified ID is not found
+    }
   };
 
   const deleteCard = (id) => {
-    let deleteItem = userHandlers.splice(id, 1);
+    // Find the index of the object with the given ID
+    const objectIndexToDelete = userHandlers.findIndex(
+      (user) => user.id === id
+    );
+
+    let deleteItem = userHandlers.splice(objectIndexToDelete, 1);
     let updatedArr = [...userHandlers, deleteItem];
     setUserHandlers(updatedArr);
+  };
+
+  const openEditBox = (id) => {
+    setOpen(true);
+    setShowCard(false);
+    const objectIndex = userHandlers.findIndex((user) => user.id === id);
+    setUserCredentails(userHandlers[objectIndex]);
+    setModalData({
+      id: id,
+    });
   };
 
   useEffect(() => {
@@ -150,16 +237,21 @@ const Input = () => {
                             titleAccess="edit"
                             className="icon"
                             onClick={() => {
-                              setModalData({
-                                id: index,
-                              });
-                              setOpen(true);
+                              openEditBox(data.id);
+                              // setModalData({
+                              //   id: data.id,
+                              // });
+                              // setOpen(true);
+                              // const objectIndex = userHandlers.findIndex(
+                              //   (user) => user.id === data.id
+                              // );
+                              // setUserCredentails(userHandlers[objectIndex]);
                             }}
                           />
                           <DeleteIcon
                             titleAccess="delete"
                             className="icon"
-                            onClick={() => deleteCard(index)}
+                            onClick={() => deleteCard(data.id)}
                           />
                         </div>
                         <div className="row">Name : {data.name}</div>
@@ -167,7 +259,10 @@ const Input = () => {
                           email : {data.email}@gmail.com
                         </div>
                         <div className="row">phone : {data.phone}</div>
-                        <div className="row">age : {data.age}</div>
+                        <div className="row">
+                          age :{" "}
+                          <span className="highlight-age">{data.age}</span>
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -196,16 +291,13 @@ const Input = () => {
                             titleAccess="edit"
                             className="icon"
                             onClick={() => {
-                              setModalData({
-                                id: index,
-                              });
-                              setOpen(true);
+                              openEditBox(data.id);
                             }}
                           />
                           <DeleteIcon
                             titleAccess="delete"
                             className="icon"
-                            onClick={() => deleteCard(index)}
+                            onClick={() => deleteCard(data.id)}
                           />
                         </div>
                         <div className="row">Name : {data.name}</div>
@@ -213,7 +305,10 @@ const Input = () => {
                           email : {data.email}@gmail.com
                         </div>
                         <div className="row">phone : {data.phone}</div>
-                        <div className="row">age : {data.age}</div>
+                        <div className="row">
+                          age :{" "}
+                          <span className="highlight-age">{data.age}</span>
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -241,16 +336,13 @@ const Input = () => {
                             titleAccess="edit"
                             className="icon"
                             onClick={() => {
-                              setModalData({
-                                id: index,
-                              });
-                              setOpen(true);
+                              openEditBox(data.id);
                             }}
                           />
                           <DeleteIcon
                             titleAccess="delete"
                             className="icon"
-                            onClick={() => deleteCard(index)}
+                            onClick={() => deleteCard(data.id)}
                           />
                         </div>
                         <div className="row"></div>
@@ -259,7 +351,10 @@ const Input = () => {
                           email : {data.email}@gmail.com
                         </div>
                         <div className="row">phone : {data.phone}</div>
-                        <div className="row">age : {data.age}</div>
+                        <div className="row">
+                          age :{" "}
+                          <span className="highlight-age">{data.age}</span>
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -274,7 +369,7 @@ const Input = () => {
               </header>
               <div className="holder">
                 {userHandlers.map((data, index) => {
-                  return data.age > 46 ? (
+                  return data.age > 45 && data.age < 99 ? (
                     <>
                       <div
                         className="card"
@@ -288,16 +383,13 @@ const Input = () => {
                             titleAccess="edit"
                             className="icon"
                             onClick={() => {
-                              setModalData({
-                                id: index,
-                              });
-                              setOpen(true);
+                              openEditBox(data.id);
                             }}
                           />
                           <DeleteIcon
                             titleAccess="delete"
                             className="icon"
-                            onClick={() => deleteCard(index)}
+                            onClick={() => deleteCard(data.id)}
                           />
                         </div>
                         <div className="row">Name : {data.name}</div>
@@ -305,7 +397,10 @@ const Input = () => {
                           email : {data.email}@gmail.com
                         </div>
                         <div className="row">phone : {data.phone}</div>
-                        <div className="row">age : {data.age}</div>
+                        <div className="row">
+                          age :{" "}
+                          <span className="highlight-age">{data.age}</span>
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -402,7 +497,7 @@ const Input = () => {
         <Box sx={style}>
           <section className="edit-card">
             <div className="col">
-              {modalData.id}
+              id : {modalData.id}
               <div className="row">
                 <h1>Name</h1>
                 <input
